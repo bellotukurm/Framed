@@ -1,14 +1,13 @@
 package com.example.framed.Home
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.framed.Pages.GamePage
 import com.example.framed.R
-import com.google.android.material.snackbar.Snackbar
+import com.example.framed.Utils.Game2
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_game.view.*
 
@@ -26,13 +25,11 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
     }
 
     override fun getItemCount(): Int {
-
         return homeFeed.size
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 //        val gameTitle = gameTitles.get(position)
-        println(homeFeed.size)
         val game = homeFeed.get(position)
         holder.itemView.textView_game_name.text = game.name
 
@@ -62,6 +59,7 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
                 Log.d("Snacky", "worked")*/
 
                 val intent = Intent(v.context, GamePage::class.java )
+                intent.putExtra("GAME_ID",game.id)
                 intent.putExtra("GAME_TITLE",game.name)
                 intent.putExtra("GAME_GENRES",genres)
                 intent.putExtra("GAME_COVER",zURL)
@@ -70,6 +68,7 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
                 intent.putExtra("GAME_SUMMARY",game.summary)
                 intent.putExtra("GAME_DEVELOPERS",game.involved_companies)
                 intent.putExtra("GAME_AGE_RATING",game.age_ratings)
+                intent.putExtra("GAME_PLAYLISTS", game.playlists)
                 v.context.startActivity(intent)
             }
         })
@@ -78,6 +77,5 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //val v: View = LayoutInflater.from(mContext).inflate(R.layout)
-
     }
 }

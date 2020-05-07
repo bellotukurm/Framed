@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.framed.R
 import com.example.framed.Utils.DBHelper
+import com.example.framed.Utils.Game2
 
 class UpcomingFragment: Fragment(){
 
     private val TAG = "UpcomingFragment"
-    private lateinit var re: RecyclerView
+    private lateinit var rec: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,8 +22,8 @@ class UpcomingFragment: Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_upcoming, container, false)
-        re = view.findViewById(R.id.recyclerViewHome)
-        re.layoutManager = LinearLayoutManager(context)
+        rec = view.findViewById(R.id.recyclerViewHome)
+        rec.layoutManager = LinearLayoutManager(context)
 //        rec.adapter = UpcomingRecyclerViewAdapter()
 
         fetchReleased()
@@ -45,12 +44,25 @@ class UpcomingFragment: Fragment(){
         dbList.forEach{
             val current = System.currentTimeMillis()/1000L
             if( it.first_release_date > current || it.first_release_date == 0L){
-                games.add(Game2(it.id,it.name,it.genres,it.cover, it.involved_companies,
-                    it.platforms, it.first_release_date,it.age_ratings,it.summary))
+                games.add(
+                    Game2(
+                        it.id, it.name, it.genres, it.cover, it.involved_companies,
+                        it.platforms, it.first_release_date, it.age_ratings, it.summary,
+                        it.playlists
+                    )
+                )
             }
         }
 
-        re.adapter = UpcomingRecyclerViewAdapter(games)
+        rec.adapter = UpcomingRecyclerViewAdapter(games)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        rec = view!!.findViewById(R.id.recyclerViewHome)
+        rec.layoutManager = LinearLayoutManager(context)
+        fetchReleased()
     }
 }

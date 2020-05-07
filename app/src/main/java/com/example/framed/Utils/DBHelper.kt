@@ -5,8 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.framed.Home.Game2
-import com.example.framed.Home.Game3
 
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION){
@@ -15,12 +13,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             "CREATE TABLE $TABLE_GAMES($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_GAME_TITLE TEXT," +
                     "$COLUMN_GAME_GENRES TEXT, $COLUMN_GAME_COVER TEXT, $COLUMN_GAME_INVOLVED_COMPANIES TEXT," +
                     "$COLUMN_GAME_PLATFORMS TEXT, $COLUMN_GAME_RELEASE_DATE LONG, $COLUMN_GAME_AGE_RATINGS INT," +
-                    "$COLUMN_GAME_SUMMARY TEXT)"
+                    "$COLUMN_GAME_SUMMARY TEXT, $COLUMN_GAME_PLAYLISTS TEXT)"
+
+        val CREATE_PLAYLISTS_TABLE =
+            "CREATE TABLE $TABLE_PLAYLISTS($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_PLAYLISTS_TITLE TEXT)"
+
         db?.execSQL(CREATE_GAMES_TABLE)
+        db?.execSQL(CREATE_PLAYLISTS_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_GAMES")
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_PLAYLISTS")
+        onCreate(db)
     }
 
     fun addGame(game: Game3) {
@@ -33,9 +38,22 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         values.put(COLUMN_GAME_RELEASE_DATE, game.first_release_date)
         values.put(COLUMN_GAME_AGE_RATINGS, game.age_ratings)
         values.put(COLUMN_GAME_SUMMARY, game.summary)
+        values.put(COLUMN_GAME_PLAYLISTS, game.playlists)
 
         val db = this.writableDatabase
         db.insert(TABLE_GAMES, null, values)
+    }
+
+    fun updateGamePlaylists(game: Game2): Int{
+        val values = ContentValues()
+        values.put(COLUMN_GAME_PLAYLISTS, game.playlists)
+        val db = this.writableDatabase
+
+        return db.update(
+            TABLE_GAMES,
+            values,
+            "$COLUMN_ID =?",
+            arrayOf((game.id).toString()))
     }
 
     fun readGames(): List<Game2> {
@@ -54,12 +72,14 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 val first_release_date = cursor.getLong(6)
                 val age_ratings = cursor.getInt(7)
                 val summary = cursor.getString(8)
+                val playlists = cursor.getString(9)
 
-                println("$id \n $name \n $genres \n $cover \n $involved_companies \n " +
-                        platforms + first_release_date  + age_ratings + summary )
-
-                storeGames.add(Game2(id, name, genres, cover, involved_companies, platforms,
-                    first_release_date, age_ratings, summary))
+                storeGames.add(
+                    Game2(
+                        id, name, genres, cover, involved_companies, platforms,
+                        first_release_date, age_ratings, summary, playlists
+                    )
+                )
 
             }while(cursor.moveToNext())
         }
@@ -81,10 +101,71 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.delete(TABLE_GAMES,"$COLUMN_ID = ?", arrayOf(id.toString()))
     }
 
+    fun countPlaylists(): Int {
+        val countQuery = "SELECT  * FROM $TABLE_PLAYLISTS"
+        val db = this.readableDatabase
+        val cursor: Cursor = db.rawQuery(countQuery, null)
+        val count: Int = cursor.getCount()
+        cursor.close()
+        return count
+    }
+
+    fun addPlaylist(playlistName: String) {
+        val values = ContentValues()
+        values.put(COLUMN_PLAYLISTS_TITLE, playlistName)
+        val db = this.writableDatabase
+        db.insert(TABLE_PLAYLISTS, null, values)
+    }
+
+    fun readPlaylists(): List<Playlist> {
+        val sql = "select * from $TABLE_PLAYLISTS"
+        val db = this.readableDatabase
+        //var storePlaylistItems = arrayListOf<PlaylistItem>()
+        var storePlaylists = arrayListOf<Playlist>()
+        val cursor = db.rawQuery(sql,null)
+        if(cursor.moveToFirst()){
+            do{
+                val id = Integer.parseInt(cursor.getString(0))
+                val name = cursor.getString(1)
+
+                storePlaylists.add(
+                    Playlist(id, name)
+                )
+            }while(cursor.moveToNext())
+        }
+        /*var uniquePlaylistNames: MutableList<String> = ArrayList()
+        storePlaylistItems.forEach {
+            val curGame = it.game
+            if (uniquePlaylistNames.contains(it.name)) {
+                val uniqueName = it.name
+                storePlaylists.forEach {
+                    if (uniqueName == it.name) {
+                        it.games.add(curGame)
+                    }
+                }
+            } else {
+                uniquePlaylistNames.add(it.name)
+                val games: MutableList<Int> = ArrayList()
+                games.add(it.game)
+                storePlaylists.add(Playlist(it.name, games))
+            }
+        }*/
+        cursor.close()
+        return storePlaylists
+    }
+
+    fun deletePlaylist(id: Int){
+        val db = this.writableDatabase
+        db.delete(TABLE_PLAYLISTS,"$COLUMN_ID = ?", arrayOf(id.toString()))
+    }
+
     companion object {
         private val DATABASE_VERSION = 5
         private val DATABASE_NAME = "game"
         private val TABLE_GAMES = "games"
+        private val TABLE_PLAYLISTS = "playlists"
+        private val COLUMN_PLAYLISTS_TITLE = "playlistsname"
+        private val COLUMN_GAME_PLAYLISTS = "playlists"
         private val COLUMN_ID = "_id"
         private val COLUMN_GAME_TITLE = "gamename"
         private val COLUMN_GAME_GENRES = "genres"

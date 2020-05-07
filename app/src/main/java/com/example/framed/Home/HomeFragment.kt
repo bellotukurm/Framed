@@ -2,7 +2,6 @@ package com.example.framed.Home
 
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.framed.R
 import com.example.framed.Utils.DBHelper
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import okhttp3.*
-import java.io.IOException
-import java.lang.reflect.Type
-import java.time.LocalDateTime
-import java.util.Calendar
+import com.example.framed.Utils.Game2
 
 
 class HomeFragment: Fragment(){
@@ -36,7 +29,6 @@ class HomeFragment: Fragment(){
         rec.layoutManager = LinearLayoutManager(context)
 //        rec.adapter = HomeRecyclerViewAdapter()
 
-
         fetchReleased()
 
         return view
@@ -50,9 +42,15 @@ class HomeFragment: Fragment(){
         dbList.forEach{
             val current = System.currentTimeMillis()/1000L
             if(current > it.first_release_date && it.first_release_date != 0L ){
-                games.add(Game2(it.id,it.name,it.genres,it.cover, it.involved_companies,
-                    it.platforms, it.first_release_date,it.age_ratings,it.summary))
-                println("zeku" + it.first_release_date)
+                games.add(
+                    Game2(
+                        it.id, it.name, it.genres, it.cover, it.involved_companies,
+                        it.platforms, it.first_release_date, it.age_ratings, it.summary,
+                        it.playlists
+                    )
+                )
+                println("zeku" + it.summary)
+                println("zeku 2" + it.playlists)
             }
         }
 
@@ -99,6 +97,14 @@ class HomeFragment: Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        rec = view!!.findViewById(R.id.recyclerViewHome)
+        rec.layoutManager = LinearLayoutManager(context)
+        fetchReleased()
     }
 }
 

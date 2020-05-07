@@ -1,50 +1,40 @@
-package com.example.framed
+package com.example.framed.Profile
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.framed.Pages.GamePage
-import com.example.framed.Utils.Game
 import com.example.framed.Utils.Game2
+import com.example.framed.Pages.GamePage
+import com.example.framed.R
+import com.example.framed.Utils.Game
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.grid_item.view.*
-import kotlinx.android.synthetic.main.item_game.view.*
-import kotlinx.android.synthetic.main.item_search.view.*
-import kotlinx.android.synthetic.main.search_rec_item.view.*
 
-class RecommendedRecyclerViewAdapter(val recommendedFeed: List<Game>): RecyclerView.Adapter<RecommendedRecyclerViewAdapter.CustomViewHolder>() {
+class GridAdapter2(val homeFeed: List<Game>): RecyclerView.Adapter<GridAdapter2.CustomViewHolder>() {
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int
-    ): RecommendedRecyclerViewAdapter.CustomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
-        val cellForRow = layoutInflater.inflate(R.layout.search_rec_item, parent, false)
+        val cellForRow = layoutInflater.inflate(R.layout.grid_item, parent, false)
         return CustomViewHolder(cellForRow)
     }
 
-    //abstract val mContext: Context
-
     override fun getItemCount(): Int {
-        return recommendedFeed.size
+        return homeFeed.size
     }
 
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GridAdapter2.CustomViewHolder, position: Int) {
+        println(homeFeed.size)
+        val game = homeFeed.get(position)
 
-        val game = recommendedFeed.get(position)
-
-        val thumbnailImageView = holder?.itemView?.search_rec_image_cover
+        val thumbnailImageView = holder?.itemView?.grid_image_cover
 
         Picasso.with(holder.itemView.context).isLoggingEnabled = true
-
-        var zURL = ""
-        if(game.cover != null){
-            zURL = game.cover.url
-            zURL = zURL.replace("thumb","720p")
-            println(zURL)
-            Picasso.with(holder.itemView.context).load("https:$zURL").resize(504,720).into(thumbnailImageView)
-        }
+        var zURL = game.cover.url
+        zURL = zURL.replace("thumb","720p")
+        println(zURL)
+        Picasso.with(holder.itemView.context).load("https:$zURL").resize(504,720).into(thumbnailImageView)
 
         var genres = ""
         if(game.genres != null){
@@ -109,8 +99,8 @@ class RecommendedRecyclerViewAdapter(val recommendedFeed: List<Game>): RecyclerV
         })
     }
 
-
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //val v: View = LayoutInflater.from(mContext).inflate(R.layout)
     }
+
 }

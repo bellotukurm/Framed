@@ -48,7 +48,7 @@
                     android:layout_height="150dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/comic_dots"
+                    android:src="@drawable/logo_long"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="-16dp" />
 

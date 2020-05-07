@@ -29,10 +29,11 @@ class ProfileActivity : AppCompatActivity() {
         Log.d("ProfileActivity","started")
         setupBottomNavigationView()
 
-        var gamesCount = findViewById<TextView>(R.id.gamesCount)
+        val gamesCount = findViewById<TextView>(R.id.gamesCount)
+        val playlistsCount = findViewById<TextView>(R.id.playlist_count)
         val dbHelperClass = DBHelper(this.applicationContext)
         gamesCount.text = dbHelperClass.countGames().toString()
-
+        playlistsCount.text = dbHelperClass.countPlaylists().toString()
 
         val gamesButton = findViewById<ConstraintLayout>(R.id.games_button)
         gamesButton.setOnClickListener(object: View.OnClickListener{
@@ -64,5 +65,11 @@ class ProfileActivity : AppCompatActivity() {
         val menu: Menu = bottomNavigationView.getMenu()
         val menuItem: MenuItem = menu.getItem(ACTIVITY_NUM)
         menuItem.setChecked(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        this.overridePendingTransition(0,0)
+        setupBottomNavigationView()
     }
 }

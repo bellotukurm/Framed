@@ -1,16 +1,14 @@
 package com.example.framed.Profile
 
-import android.app.ProgressDialog.show
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.framed.Home.Game2
+import com.example.framed.Utils.Game2
 import com.example.framed.R
 import com.example.framed.Utils.DBHelper
-import android.content.DialogInterface
 import android.content.Intent
 import android.widget.EditText
 import android.widget.TextView
@@ -42,12 +40,22 @@ class AllGamesPage : AppCompatActivity() {
         val games: MutableList<Game2> = arrayListOf()
         dbList.forEach{
             if(it.platforms.contains(filt)){
-                games.add(Game2(it.id,it.name,it.genres,it.cover, it.involved_companies,
-                    it.platforms, it.first_release_date,it.age_ratings,it.summary))
+                games.add(
+                    Game2(
+                        it.id, it.name, it.genres, it.cover, it.involved_companies,
+                        it.platforms, it.first_release_date, it.age_ratings, it.summary,
+                        it.playlists
+                    )
+                )
             }
             else if(filt.equals("All")){
-                games.add(Game2(it.id,it.name,it.genres,it.cover, it.involved_companies,
-                    it.platforms, it.first_release_date,it.age_ratings,it.summary))
+                games.add(
+                    Game2(
+                        it.id, it.name, it.genres, it.cover, it.involved_companies,
+                        it.platforms, it.first_release_date, it.age_ratings, it.summary,
+                        it.playlists
+                    )
+                )
             }
         }
 
@@ -80,8 +88,8 @@ class AllGamesPage : AppCompatActivity() {
             val intent = Intent(this, AllGamesPage::class.java)
             intent.putExtra("HINT_VALUE", "All")
             startActivity(intent)
-        }
 
+        }
 
     }
 

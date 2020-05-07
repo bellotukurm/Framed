@@ -1,27 +1,23 @@
 package com.example.framed.Home
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.RecyclerView
 import com.example.framed.Pages.GamePage
 import com.example.framed.R
-import com.google.android.material.snackbar.Snackbar
+import com.example.framed.Utils.Base
+import com.example.framed.Utils.Game2
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_game.view.*
 import kotlinx.android.synthetic.main.item_upcoming.view.*
 
 
 class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<UpcomingRecyclerViewAdapter.CustomViewHolder>() {
-
-    //abstract val mContext: Context
-    val gameTitles = listOf("Cyberpunk","Sekiro","God of War","Death Stranding",
-        "Cyberpunk","Sekiro","God of War","Death Stranding")
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
@@ -76,6 +72,7 @@ class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapt
             override fun onClick(v: View){
 
                 val intent = Intent(v.context, GamePage::class.java )
+                intent.putExtra("GAME_ID",game.id)
                 intent.putExtra("GAME_TITLE",game.name)
                 intent.putExtra("GAME_GENRES",genres)
                 intent.putExtra("GAME_COVER",zURL)
@@ -84,6 +81,25 @@ class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapt
                 intent.putExtra("GAME_SUMMARY",game.summary)
                 intent.putExtra("GAME_DEVELOPERS",game.involved_companies)
                 intent.putExtra("GAME_AGE_RATING",game.age_ratings)
+                intent.putExtra("GAME_PLAYLISTS", game.playlists)
+
+                /*val largeIcon: Bitmap = BitmapFactory.decodeResource(v.context.resources,R.drawable.logo)
+                val pending = PendingIntent.getActivity(v.context, 0, intent, 0)
+                val notification = NotificationCompat.Builder(v.context, CHANNEL_1_ID)
+                    .setContentTitle(game.name)
+                    .setContentText("is out now!!")
+                    .setLargeIcon(largeIcon)
+                    .setSmallIcon(R.drawable.ic_games)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                    .setColor(Color.rgb(255,87,34))
+                    .setContentIntent(pending)
+                    .build()
+                val notificationManager = NotificationManagerCompat.from(v.context)
+                notificationManager.notify(1,notification)*/
+
+
+
                 v.context.startActivity(intent)
             }
         })

@@ -6,7 +6,7 @@
     >
 
     <ImageView
-        android:id="@+id/grid_image_cover"
+        android:id="@+id/search_rec_image_cover"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"

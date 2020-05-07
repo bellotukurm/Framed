@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuSave"
-        android:title="Save to playlist" />
+        android:title="Customize playlist" />
     <item
         android:id="@+id/menuRemove"
         android:title="Remove" />

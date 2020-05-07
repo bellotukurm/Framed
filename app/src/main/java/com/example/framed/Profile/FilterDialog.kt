@@ -4,17 +4,11 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.widget.EditText
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.core.view.contains
-import com.example.framed.Home.Game2
-import com.example.framed.Pages.GamePage
+import com.example.framed.Utils.Game2
 import com.example.framed.R
 import com.example.framed.Utils.DBHelper
 
@@ -55,16 +49,18 @@ class FilterDialog(var hinter: String): AppCompatDialogFragment (){
 
             var uniqueConsoles: MutableList<String> = ArrayList()
             dbList.forEach{
-                var toSplitString = it.platforms.substring(0, it.platforms.length-3)
-                var toSplit = toSplitString.split(" • ")
+                var toSplitString = it.platforms.substring(0, it.platforms.length-1)
+                var toSplit = toSplitString.split("/")
                 println(toSplit + " to spliit")
                 toSplit.forEach{
-                    if(uniqueConsoles.contains(it) || uniqueConsoles.contains(it+" ") || uniqueConsoles.contains(it.substring(0, it.length-1)))
-                        {println(it + "skipped")}
+                    var itemContents = it.split("|")
+                    if(uniqueConsoles.contains(itemContents.get(0)) || uniqueConsoles.contains(itemContents.get(0) +" ")
+                        || uniqueConsoles.contains(itemContents.get(0) .substring(0, itemContents.get(0) .length-1)))
+                        {println(itemContents.get(0) + "skipped")}
                     else{
-                        uniqueConsoles.add(it)
-                        pop.menu.add(it)
-                        println(it +"added")
+                        uniqueConsoles.add(itemContents.get(0))
+                        pop.menu.add(itemContents.get(0))
+                        println(itemContents.get(0) +"added")
                     }
                 }
             }

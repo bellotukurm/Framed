@@ -1,21 +1,15 @@
 package com.example.framed.Profile
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.framed.Home.Game2
-import com.example.framed.Home.HomeRecyclerViewAdapter
+import com.example.framed.Utils.Game2
 import com.example.framed.Pages.GamePage
 import com.example.framed.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_all_games_page.view.*
 import kotlinx.android.synthetic.main.grid_item.view.*
-import kotlinx.android.synthetic.main.item_game.view.*
 
 class GridAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<GridAdapter.CustomViewHolder>() {
 
@@ -59,6 +53,7 @@ class GridAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<GridAdapter.C
                 Log.d("Snacky", "worked")*/
 
                 val intent = Intent(v.context, GamePage::class.java )
+                intent.putExtra("GAME_ID",game.id)
                 intent.putExtra("GAME_TITLE",game.name)
                 intent.putExtra("GAME_GENRES",genres)
                 intent.putExtra("GAME_COVER",zURL)

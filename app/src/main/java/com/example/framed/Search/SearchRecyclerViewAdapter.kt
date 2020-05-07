@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.framed.Home.Game
+import com.example.framed.Utils.Game
 import com.example.framed.Pages.GamePage
 import com.example.framed.R
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_game.view.*
 import kotlinx.android.synthetic.main.item_search.view.*
 
 class SearchRecyclerViewAdapter(val homeFeed: List<Game>): RecyclerView.Adapter<SearchRecyclerViewAdapter.CustomViewHolder>() {
@@ -46,20 +45,19 @@ class SearchRecyclerViewAdapter(val homeFeed: List<Game>): RecyclerView.Adapter<
 
         var genres = ""
         if(game.genres != null){
-            game.genres.forEach { genres += it.name + " • "}
+            game.genres.forEach { genres += it.name + "|" + it.id.toString() + "/"}
         }
 
 
         var consoles = ""
         if(game.platforms != null){
-            game.platforms.forEach{consoles += it.name + " • "}
+            game.platforms.forEach{consoles += it.name + "|" + it.id.toString() + "/"}
         }
 
 
         var developers = "by "
         if(game.involved_companies != null){
-            game.involved_companies.forEach{developers += it.company.name + " • "}
-            game.involved_companies.forEach { println(it.company.name) }
+            game.involved_companies.forEach{developers += it.company.name + "|" + it.id.toString() + "/"}
         }
 
         println(game.first_release_date)
@@ -89,9 +87,9 @@ class SearchRecyclerViewAdapter(val homeFeed: List<Game>): RecyclerView.Adapter<
 
         holder.itemView.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View){
-                val snackbar = Snackbar.make(v, "It worked", Snackbar.LENGTH_LONG)
+                /*val snackbar = Snackbar.make(v, "It worked", Snackbar.LENGTH_LONG)
                 snackbar.show()
-                Log.d("Snacky", "worked")
+                Log.d("Snacky", "worked")*/
 
                 val intent = Intent(v.context, GamePage::class.java )
                 intent.putExtra("GAME_TITLE",game.name)

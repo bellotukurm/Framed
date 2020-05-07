@@ -185,7 +185,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:paddingRight="110dp"
-                android:text="by"
+                android:text="by "
                 android:textColor="#333333"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"

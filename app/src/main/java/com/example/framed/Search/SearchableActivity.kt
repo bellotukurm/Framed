@@ -6,18 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.framed.Home.Cover
-import com.example.framed.Home.Game
-import com.example.framed.Home.HomeRecyclerViewAdapter
+import com.example.framed.Utils.Game
 import com.example.framed.R
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.activity_searchable.*
 import okhttp3.*
 import java.io.IOException
 import java.lang.reflect.Type
@@ -81,7 +77,8 @@ class SearchableActivity : AppCompatActivity() {
         println("0000000000")
         var url = "https://api-v3.igdb.com/games/?fields=name,genres.name,cover.url," +
                         "involved_companies.company.name,platforms.name,first_release_date," +
-                        "age_ratings.rating,summary,screenshots.url&search=pvxw&where%version_parent=null"
+                        "age_ratings.rating,summary,screenshots.url,videos.video_id" +
+                        "&search=pvxw&where%version_parent=null"
         //var url = "https://api-v3.igdb.com/games/?fields=name,genres.name,cover.url," +
                 //"involved_companies.company.name,platforms.name,first_release_date," +
                 //"age_ratings.rating,summary,screenshots.url&order=popularity:desc"
@@ -96,13 +93,15 @@ class SearchableActivity : AppCompatActivity() {
 
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
-                println("getting")
+
                 val body = response.body?.string()
-                println("blahmelaba")
+                //println("woosh" + body)
 
                 var v = body?.split("\n")
                 var vm = v?.toMutableList()
+                //For every line in the returned json
                 for(i in 0..(vm?.size!!)-1){
+                    //adding { to class of cover if does not have
                     if(vm.get(i).contains("\"cover\": {")){
                     }else if(vm.get(i).contains("\"cover\": ")){
                         vm.set(i, vm.get(i).replace("\"cover\":","\"cover\": {\n\"id\":"))
@@ -110,7 +109,12 @@ class SearchableActivity : AppCompatActivity() {
                         val zy = "\"url\": \"\" \n},\n".plus(vm.get(i+1))
                         vm.set(i+1, zy)
                     }
-
+                    if(vm.get(i).contains("\"screenshots\": [")){
+                        if(vm.get(i+1).contains("{")){
+                        }else{
+                            vm.set(i+1, "")
+                        }
+                    }
                 }
                 var formattedBody = ""
                 vm.forEach{
@@ -153,7 +157,7 @@ class SearchableActivity : AppCompatActivity() {
 
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
-                println("np")
+
                 val body = response.body?.string()
 
                 val gson = GsonBuilder().create()
@@ -173,7 +177,5 @@ class SearchableActivity : AppCompatActivity() {
         })
     }
 
-    private fun doMySearch(query: String) {
-
-    }
+    private fun doMySearch(query: String) {}
 }
