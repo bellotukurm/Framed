@@ -27,7 +27,7 @@ class HomeFragment: Fragment(){
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
         rec = view.findViewById(R.id.recyclerViewHome)
         rec.layoutManager = LinearLayoutManager(context)
-//        rec.adapter = HomeRecyclerViewAdapter()
+
 
         fetchReleased()
 
@@ -35,10 +35,13 @@ class HomeFragment: Fragment(){
     }
 
     fun fetchReleased(){
+        //Getting all games in user's library
         val dbHelperClass = DBHelper(activity!!.applicationContext)
         val dbList = dbHelperClass.readGames()
 
         val games: MutableList<Game2> = arrayListOf()
+
+        //Getting all the games in users library that have been released
         dbList.forEach{
             val current = System.currentTimeMillis()/1000L
             if(current > it.first_release_date && it.first_release_date != 0L ){
@@ -49,50 +52,12 @@ class HomeFragment: Fragment(){
                         it.playlists
                     )
                 )
-                println("zeku" + it.summary)
-                println("zeku 2" + it.playlists)
             }
         }
 
         activity?.runOnUiThread{
             rec.adapter = HomeRecyclerViewAdapter(games)
         }
-    }
-
-    fun fetchJson(){
-        /*println("attempting to fetch JSON")
-
-        val url = "https://api-v3.igdb.com/games/?fields=name,genres.name,cover.url," +
-                "involved_companies.company.name,platforms.name,first_release_date," +
-                "age_ratings.rating,summary,screenshots.url&order=popularity:desc"
-
-        val request = Request.Builder().url(url)
-            .addHeader("user-key", "b5ea467d2840a0b342df1d8b049b3ad4")
-            .addHeader("Accept", "application/json")
-            .build()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object: Callback {
-            override fun onResponse(call: Call, response: Response) {
-                println("np")
-                val body = response.body?.string()
-                println(body)
-
-                val gson = GsonBuilder().create()
-
-                val collectionType: Type = object :
-                    TypeToken<Collection<Game?>?>() {}.type
-                val games: List<Game> = gson.fromJson(body, collectionType)
-
-                activity?.runOnUiThread{
-                    rec.adapter = HomeRecyclerViewAdapter(games)
-                }
-            }
-            override fun onFailure(call: Call, e: IOException) {
-                println("iFail")
-            }
-        })*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +67,7 @@ class HomeFragment: Fragment(){
     override fun onResume() {
         super.onResume()
 
+        //reloading fragment on resume
         rec = view!!.findViewById(R.id.recyclerViewHome)
         rec.layoutManager = LinearLayoutManager(context)
         fetchReleased()

@@ -36,32 +36,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        //createNotificationChannels()
-
         Log.d("HomeActivity","started")
         setupBottomNavigationView()
         setupViewPager()
-
-        //this.deleteDatabase("game");
-        //recyclerViewHome.layoutManager = LinearLayoutManager(this)
     }
 
-    /*private fun createNotificationChannels(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channel1 = NotificationChannel(
-                Base.CHANNEL_1_ID,
-                "Channel 1",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            channel1.description = "testing Notification"
-
-            val manager: NotificationManager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel1)
-
-        }
-    }*/
-
-    //Responsible for adding 2 tabs, playList and upcoming
     private fun setupViewPager(){
         val adapter = SectionsPagerAdapter(supportFragmentManager)
         adapter.addFragment(HomeFragment())
@@ -76,11 +55,8 @@ class HomeActivity : AppCompatActivity() {
         tabLayout.getTabAt(1)?.setText("UPCOMING")
 
     }
+
     private fun setupBottomNavigationView(){
-
-        /*val buttonNavigationViewEx: BottomNavigationViewEx =
-            findViewById(R.id.bottomNavViewBar)*/
-
         val bottomNavigationView: BottomNavigationView =
             findViewById(R.id.bottomNavViewBar)
 
@@ -93,26 +69,11 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-
     override fun onResume() {
         super.onResume()
         this.overridePendingTransition(0,0)
         setupBottomNavigationView()
-        /*val adapter = SectionsPagerAdapter(supportFragmentManager)
-        adapter.addFragment(HomeFragment())
-        adapter.addFragment(UpcomingFragment())
-        viewPager = findViewById(R.id.container) as ViewPager
-        viewPager.setAdapter(adapter)
-
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-        tabLayout.setupWithViewPager(viewPager)
-
-        tabLayout.getTabAt(0)?.setText("RELEASED")
-        tabLayout.getTabAt(1)?.setText("UPCOMING")*/
 
     }
-
-
-
 
 }

@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
+//Class Not implemented Yet
 class TopRatedRecyclerViewAdapter: RecyclerView.Adapter<TopRatedRecyclerViewAdapter.CustomViewHolder>() {
 
 
@@ -14,15 +15,6 @@ class TopRatedRecyclerViewAdapter: RecyclerView.Adapter<TopRatedRecyclerViewAdap
         val cellForRow = layoutInflater.inflate(R.layout.item_game_poster1, parent, false)
         return CustomViewHolder(cellForRow)
     }
-
-
-
-
-
-    //abstract val mContext: Context
-
-
-
 
     override fun getItemCount(): Int {
         return 7

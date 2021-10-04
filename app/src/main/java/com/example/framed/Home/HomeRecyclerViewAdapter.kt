@@ -13,11 +13,6 @@ import kotlinx.android.synthetic.main.item_game.view.*
 
 class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<HomeRecyclerViewAdapter.CustomViewHolder>() {
 
-    //abstract val mContext: Context
-    val gameTitles = listOf("Cyberpunk","Sekiro","God of War","Death Stranding",
-        "Cyberpunk","Sekiro","God of War","Death Stranding")
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
         val cellForRow = layoutInflater.inflate(R.layout.item_game, parent, false)
@@ -29,12 +24,12 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-//        val gameTitle = gameTitles.get(position)
+
         val game = homeFeed.get(position)
         holder.itemView.textView_game_name.text = game.name
 
+        //Put cover of game on every game object on homepage
         val thumbnailImageView = holder?.itemView?.game_image
-
         Picasso.with(holder.itemView.context).isLoggingEnabled = true
         var zURL = game.cover
         zURL = zURL.replace("thumb","720p")
@@ -52,11 +47,9 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
             ageRating = game.age_ratings
         }
 
+        //Passing info to gamepage on click
         holder.itemView.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View){
-                /*val snackbar = Snackbar.make(v, "It worked", Snackbar.LENGTH_LONG)
-                snackbar.show()
-                Log.d("Snacky", "worked")*/
 
                 val intent = Intent(v.context, GamePage::class.java )
                 intent.putExtra("GAME_ID",game.id)
@@ -76,6 +69,5 @@ class HomeRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapter<H
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //val v: View = LayoutInflater.from(mContext).inflate(R.layout)
     }
 }

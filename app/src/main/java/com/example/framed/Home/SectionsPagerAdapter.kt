@@ -25,7 +25,4 @@ class SectionsPagerAdapter: FragmentPagerAdapter{
         mFragmentList.add(fragment)
     }
 
-
-
-
 }

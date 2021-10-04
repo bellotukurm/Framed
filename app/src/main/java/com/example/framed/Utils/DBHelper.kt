@@ -133,23 +133,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 )
             }while(cursor.moveToNext())
         }
-        /*var uniquePlaylistNames: MutableList<String> = ArrayList()
-        storePlaylistItems.forEach {
-            val curGame = it.game
-            if (uniquePlaylistNames.contains(it.name)) {
-                val uniqueName = it.name
-                storePlaylists.forEach {
-                    if (uniqueName == it.name) {
-                        it.games.add(curGame)
-                    }
-                }
-            } else {
-                uniquePlaylistNames.add(it.name)
-                val games: MutableList<Int> = ArrayList()
-                games.add(it.game)
-                storePlaylists.add(Playlist(it.name, games))
-            }
-        }*/
         cursor.close()
         return storePlaylists
     }

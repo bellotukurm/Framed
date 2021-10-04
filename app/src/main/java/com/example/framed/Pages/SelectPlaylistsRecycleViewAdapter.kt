@@ -34,10 +34,7 @@ class SelectPlaylistsRecyclerViewAdapter(val playlistsFeed: List<Playlist>, val 
         var playlist = playlistsFeed.get(position)
         holder.itemView.customize_playlist_name.text = playlist.name
 
-        println("z games playlist" + game.playlists)
-
         if(game.playlists.contains(playlist.id.toString())){
-            println("lariat")
             holder.itemView.customize_checkBox.isChecked = true
             if(!checkedList.contains(playlist)){
                 checkedList.add(playlist)
@@ -64,17 +61,6 @@ class SelectPlaylistsRecyclerViewAdapter(val playlistsFeed: List<Playlist>, val 
                 println(holder.itemView.customize_checkBox.isChecked)
             }
         })
-        /*if(!holder.itemView.customize_checkBox.isChecked){
-            )
-        }
-        if(holder.itemView.customize_checkBox.isChecked){
-            holder.itemView.customize_checkBox.setOnClickListener(object: View.OnClickListener {
-                override fun onClick(v: View){
-
-                }
-            })
-        }*/
-
 
     }
 

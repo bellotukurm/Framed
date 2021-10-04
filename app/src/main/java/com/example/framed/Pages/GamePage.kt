@@ -23,11 +23,6 @@ import com.squareup.picasso.Picasso
 
 class GamePage : AppCompatActivity(){
 
-//    var alarmReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context, intent: Intent) {
-//            Toast.makeText(context, "Alarm worked", Toast.LENGTH_LONG).show()
-//        }
-//    }
     private val myFilter: IntentFilter = IntentFilter(Intent.ACTION_ANSWER)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,45 +37,31 @@ class GamePage : AppCompatActivity(){
         val addButton = findViewById<FloatingActionButton>(R.id.addFloatingActionButton)
         val menuButton = findViewById<FloatingActionButton>(R.id.menuFloatingActionButton)
 
+        //Getting all games in the database
         val DBHelperClass = DBHelper(this)
         val dbList = DBHelperClass.readGames()
 
+        //If game exists in the database
         dbList.forEach{
             if(it.name.equals(title.text)){
-                //addButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_add))
-                //addButton.setImageResource(R.drawable.ic_more)
-                //addButton.backgroundTintList = null
+
                 addButton.isEnabled = false
                 addButton.visibility = View.GONE
                 menuButton.isEnabled = true
                 menuButton.visibility = View.VISIBLE
             }
-            println("${it.name}")
-            println(title.text)
         }
 
+        //Making the cover of the game show
         val cover = findViewById<ImageView>(R.id.imageViewCover)
         val zURL = intent.getStringExtra("GAME_COVER")
         if(zURL == ""){
         }else{
-            println("hsash" + zURL)
             Picasso.with(this).load("https:$zURL").into(cover)
         }
 
-        /*registerReceiver(alarmReceiver, myFilter)
-        val notificationIntent = Intent(this, Base::class.java )
-        val pending = PendingIntent.getActivity(this, 0,notificationIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT)
-
-        val alarmManager:AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val timeAtButtonClick = System.currentTimeMillis()
-        val tenSecondsInMillis = 1000 * 10
-        alarmManager.set(AlarmManager.RTC_WAKEUP,
-            timeAtButtonClick,
-            pending)*/
-
+        //Setting what happens when add button is pressed
         addButton.setOnClickListener{
-
             val toStore = Game3(
                 intent.getStringExtra("GAME_TITLE"), intent.getStringExtra("GAME_GENRES"), zURL,
                 intent.getStringExtra("GAME_DEVELOPERS"), intent.getStringExtra("GAME_CONSOLES"),
@@ -98,6 +79,7 @@ class GamePage : AppCompatActivity(){
             Toast.makeText(this, "Game Added", Toast.LENGTH_SHORT).show()
         }
 
+        //Setting what happens when menu button is pressed
         menuButton.setOnClickListener {
             val pop = PopupMenu(this, menuButton)
             pop.menuInflater.inflate(R.menu.game_page_menu, pop.menu)
@@ -108,9 +90,9 @@ class GamePage : AppCompatActivity(){
             pop.show()
         }
 
+        //Getting games unix timestamp and converting to release date
         val rd = findViewById<TextView>(R.id.textViewReleaseDate)
         val unixRD = (intent.getLongExtra("GAME_RD",0))
-
         val current = System.currentTimeMillis()/1000L
         var releaseDate = ""
         val sdf = java.text.SimpleDateFormat("dd' 'MMMM' 'yyyy")
@@ -123,6 +105,7 @@ class GamePage : AppCompatActivity(){
             rd.text = releaseDate
         }
 
+        //Getting genres of game and splitting the genres names from id
         val genres = findViewById<TextView>(R.id.game_genres)
         val getGenres = intent.getStringExtra("GAME_GENRES")
         if(getGenres.length > 3){
@@ -136,6 +119,7 @@ class GamePage : AppCompatActivity(){
             genres.text = gamepageGenres.substring(0, gamepageGenres.length-2)
         }
 
+        //Getting consoles of game and splitting the consoles names from id
         val consoles = findViewById<TextView>(R.id.textViewConsoles)
         val getConsoles = intent.getStringExtra("GAME_CONSOLES")
         if(getConsoles.length > 2){
@@ -149,9 +133,11 @@ class GamePage : AppCompatActivity(){
             consoles.text = gamepageConsole.substring(0, gamepageConsole.length-2)
         }
 
+        //Getting summary and setting it in game page
         val summary = findViewById<TextView>(R.id.textViewSummary)
         summary.text = intent.getStringExtra("GAME_SUMMARY")
 
+        //Getting developers of game and splitting the developers names from id
         val developers = findViewById<TextView>(R.id.textViewDevelopers)
         val getDevelopers = intent.getStringExtra("GAME_DEVELOPERS")
         if(getDevelopers.length > 3){
@@ -165,6 +151,7 @@ class GamePage : AppCompatActivity(){
             developers.text = gamepageDevelopers.substring(0, gamepageDevelopers.length-2)
         }
 
+        //putting the right age rating on the page
         val ageRating = findViewById<ImageView>(R.id.imageViewAgeRating)
         val getAgeRating = intent.getIntExtra("GAME_AGE_RATING",0)
         when (getAgeRating) {
@@ -187,7 +174,7 @@ class GamePage : AppCompatActivity(){
     }
 
 
-
+    //Method that sets what happens when menu button is clicked
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         val genres = findViewById<TextView>(R.id.game_genres)
@@ -198,6 +185,7 @@ class GamePage : AppCompatActivity(){
 
         when(item.itemId){
             R.id.menuSave -> {
+                //Passing game data to customize playlist dialog
                 val game: Game2 = Game2(intent.getIntExtra("GAME_ID",0),
                     intent.getStringExtra("GAME_TITLE"), getGenres, intent.getStringExtra("GAME_COVER"),
                     intent.getStringExtra("GAME_DEVELOPERS"), intent.getStringExtra("GAME_CONSOLES"),
@@ -241,8 +229,8 @@ class GamePage : AppCompatActivity(){
         }
     }
 
+    //Opens customize dialog list
     private fun openCustomizePlaylistsDialog(game: Game2) {
-
         val customizePlaylistsDialog = CustomizePlaylistsDialog(game)
         customizePlaylistsDialog.show(supportFragmentManager, "customize playlist dialog")
     }

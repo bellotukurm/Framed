@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
 import com.example.framed.R
 
+//class for notification that is not working
 class Base: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         Toast.makeText(context, "Notified", Toast.LENGTH_SHORT).show();
@@ -39,28 +40,4 @@ class Base: BroadcastReceiver() {
         const val CHANNEL_1_ID = "channel1"
     }
 }
-/*
-class Base: Application() {
-    companion object{
-        const val CHANNEL_1_ID = "channel1"
-    }
-    override fun onCreate() {
-        super.onCreate()
 
-        createNotificationChannels();
-    }
-
-    private fun createNotificationChannels(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channel1 = NotificationChannel(
-                CHANNEL_1_ID,
-                "Channel 1",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            channel1.description = "testing Notification"
-
-            val manager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            manager.createNotificationChannel(channel1)
-        }
-    }
-}*/

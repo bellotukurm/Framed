@@ -24,14 +24,13 @@ class SeeAllRecommendedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_see_all_recommended)
 
-        println("seeAllOncreate")
-
         var rec = findViewById<RecyclerView>(R.id.recyclerViewSeeAllRecGames)
         rec.layoutManager = GridLayoutManager(this, 3)
 
         val DBHelperClass = DBHelper(this)
         val dbList = DBHelperClass.readGames()
 
+        //getting highest platform recurrence
         val platrec = getPlatformRecurrence(dbList)
         var maxplatRec = 0
         val maxPlatformsID: MutableList<String> = arrayListOf()
@@ -49,6 +48,7 @@ class SeeAllRecommendedActivity : AppCompatActivity() {
             }
         }
 
+        //Getting highest genre recurrence
         val genrerec = getGenreRecurrence(dbList)
         var maxgenreRec = 0
         val maxGenresID: MutableList<String> = arrayListOf()
@@ -66,6 +66,7 @@ class SeeAllRecommendedActivity : AppCompatActivity() {
             }
         }
 
+        //getting highest developer recurrence
         val devrec = getDeveloperRecurrence(dbList)
         var maxdevRec = 0
         val maxDevID: MutableList<String> = arrayListOf()
@@ -89,6 +90,7 @@ class SeeAllRecommendedActivity : AppCompatActivity() {
         val firstMostGenre = maxGenresID.get(0)
         println("first most genres " + maxGenresID.get(0))
 
+        //making request with appropriate parameters
         var url = "https://api-v3.igdb.com/games"
         val body:RequestBody = RequestBody.create("application/json".toMediaType(),
             "fields name,genres.name,cover.url,involved_companies.company.name," +
@@ -102,8 +104,8 @@ class SeeAllRecommendedActivity : AppCompatActivity() {
             .post(body)
             .build()
 
+        //passing the request
         val client = OkHttpClient()
-
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
 

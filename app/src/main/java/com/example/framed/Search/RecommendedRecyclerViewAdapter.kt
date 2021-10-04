@@ -75,10 +75,6 @@ class RecommendedRecyclerViewAdapter(val recommendedFeed: List<Game>): RecyclerV
         println(ageRating)
 
         var releaseDate = ""
-        /*if(game.first_release_date != null){
-            game.involved_companies.forEach{developers += it.company.name + " • "}
-            game.involved_companies.forEach { println(it.company.name) }
-        }*/
         val sdf = java.text.SimpleDateFormat("dd' 'MMMM' 'yyyy")
         val date = java.util.Date(game.first_release_date * 1000)
         println("looooopy" + game.first_release_date)
@@ -111,6 +107,5 @@ class RecommendedRecyclerViewAdapter(val recommendedFeed: List<Game>): RecyclerV
 
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //val v: View = LayoutInflater.from(mContext).inflate(R.layout)
     }
 }

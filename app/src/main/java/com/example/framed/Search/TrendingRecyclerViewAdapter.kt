@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
+
+//This is not implemented yet
 class TrendingRecyclerViewAdapter: RecyclerView.Adapter<TrendingRecyclerViewAdapter.CustomViewHolder>() {
 
 
@@ -15,15 +17,6 @@ class TrendingRecyclerViewAdapter: RecyclerView.Adapter<TrendingRecyclerViewAdap
         return CustomViewHolder(cellForRow)
     }
 
-
-
-
-
-    //abstract val mContext: Context
-
-
-
-
     override fun getItemCount(): Int {
         return 7
     }
@@ -31,7 +24,6 @@ class TrendingRecyclerViewAdapter: RecyclerView.Adapter<TrendingRecyclerViewAdap
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
 
     }
-
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         //val v: View = LayoutInflater.from(mContext).inflate(R.layout)

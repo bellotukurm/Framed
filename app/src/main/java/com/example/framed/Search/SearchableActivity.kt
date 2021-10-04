@@ -39,17 +39,16 @@ class SearchableActivity : AppCompatActivity() {
         rec.layoutManager = LinearLayoutManager(this)
         fetchJson()
 
+        //Making the abilty to listen to when text change in search bar
         val searchText = findViewById<EditText>(R.id.search_edit_text)
         searchText.addTextChangedListener(object : TextWatcher
         {
             override fun afterTextChanged(s: Editable?) {
 
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searcher(s.toString())
             }
@@ -79,9 +78,8 @@ class SearchableActivity : AppCompatActivity() {
                         "involved_companies.company.name,platforms.name,first_release_date," +
                         "age_ratings.rating,summary,screenshots.url,videos.video_id" +
                         "&search=pvxw&where%version_parent=null"
-        //var url = "https://api-v3.igdb.com/games/?fields=name,genres.name,cover.url," +
-                //"involved_companies.company.name,platforms.name,first_release_date," +
-                //"age_ratings.rating,summary,screenshots.url&order=popularity:desc"
+
+        //pvxw is a combination that is very unlikely to be used in that order
         url = url.replace("pvxw",text)
 
         val request = Request.Builder().url(url)
@@ -89,8 +87,8 @@ class SearchableActivity : AppCompatActivity() {
             .addHeader("Accept", "application/json")
             .build()
 
+        //calling the get request
         val client = OkHttpClient()
-
         client.newCall(request).enqueue(object: Callback {
             override fun onResponse(call: Call, response: Response) {
 
@@ -140,10 +138,10 @@ class SearchableActivity : AppCompatActivity() {
         })
     }
 
+    //Method that populate the list shown before a user starts searching
     fun fetchJson(){
         println("attempting to fetch JSON")
 
-        //val url = "https://api-v3.igdb.com/games/?fields=name,genres.name,cover.url,franchise&order=popularity:desc"
         var url = "https://api-v3.igdb.com/games/?fields=name,genres.name,cover.url," +
                 "involved_companies.company.name,platforms.name,first_release_date," +
                 "age_ratings.rating,summary,screenshots.url&where%version_parent=null&order=popularity:desc"

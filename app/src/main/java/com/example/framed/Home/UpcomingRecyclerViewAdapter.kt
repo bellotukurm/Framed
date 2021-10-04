@@ -30,10 +30,11 @@ class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-//        val gameTitle = gameTitles.get(position)
+
         val game = homeFeed.get(position)
         holder.itemView.textView_upcoming_game_name.text = game.name
 
+        //Show number of days before a game is released
         val current = System.currentTimeMillis()/1000L
         if(game.first_release_date == 0L){
             holder.itemView.textView_upcoming_date.text = "TBA"
@@ -50,6 +51,7 @@ class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapt
 
         val thumbnailImageView = holder?.itemView?.upcoming_game_image
 
+        //set cover image of upcoming game object
         Picasso.with(holder.itemView.context).isLoggingEnabled = true
         var zURL = game.cover
         zURL = zURL.replace("thumb","720p")
@@ -66,8 +68,8 @@ class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapt
         }else{
             ageRating = game.age_ratings
         }
-        println(ageRating)
 
+        //Passing info to gamepage on upcoming game object clicked
         holder.itemView.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View){
 
@@ -83,31 +85,11 @@ class UpcomingRecyclerViewAdapter(val homeFeed: List<Game2>): RecyclerView.Adapt
                 intent.putExtra("GAME_AGE_RATING",game.age_ratings)
                 intent.putExtra("GAME_PLAYLISTS", game.playlists)
 
-                /*val largeIcon: Bitmap = BitmapFactory.decodeResource(v.context.resources,R.drawable.logo)
-                val pending = PendingIntent.getActivity(v.context, 0, intent, 0)
-                val notification = NotificationCompat.Builder(v.context, CHANNEL_1_ID)
-                    .setContentTitle(game.name)
-                    .setContentText("is out now!!")
-                    .setLargeIcon(largeIcon)
-                    .setSmallIcon(R.drawable.ic_games)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_REMINDER)
-                    .setColor(Color.rgb(255,87,34))
-                    .setContentIntent(pending)
-                    .build()
-                val notificationManager = NotificationManagerCompat.from(v.context)
-                notificationManager.notify(1,notification)*/
-
-
-
                 v.context.startActivity(intent)
             }
         })
 
     }
 
-    class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //val v: View = LayoutInflater.from(mContext).inflate(R.layout)
-
-    }
+    class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 }

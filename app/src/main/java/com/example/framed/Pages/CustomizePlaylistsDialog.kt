@@ -21,21 +21,20 @@ class CustomizePlaylistsDialog(val game: Game2): AppCompatDialogFragment (){
 
         val dbHelperClass = DBHelper(activity!!.applicationContext)
 
-
         var rec = view?.findViewById<RecyclerView>(R.id.recyclerViewAllPlaylistsCheck)
         rec?.layoutManager = LinearLayoutManager(view?.context)
 
         var recGame = game
         val dbList = dbHelperClass.readGames()
 
+        //Finding the game user is in
         dbList.forEach {
-            println("z game id" + it.id + game.id)
             if(it.id == game.id){
                 recGame = it
-                println(it.playlists)
             }
         }
 
+        //Setting what happens when positive or negative button is pressed
         val dbPlaylistList = dbHelperClass.readPlaylists()
         rec?.adapter = SelectPlaylistsRecyclerViewAdapter(dbPlaylistList, recGame)
         builder.setView(view)
@@ -44,7 +43,6 @@ class CustomizePlaylistsDialog(val game: Game2): AppCompatDialogFragment (){
                 game.playlists = ""
                 (rec?.adapter as SelectPlaylistsRecyclerViewAdapter).getCheckedItems().forEach {
                     game.playlists += it.id.toString() + ","
-                    println(it.name)
                 }
                 println(dbHelperClass.updateGamePlaylists(game))
                 dbList.forEach {
@@ -52,9 +50,6 @@ class CustomizePlaylistsDialog(val game: Game2): AppCompatDialogFragment (){
                 }
             })
             .setNegativeButton("cancel", { dialogInterface: DialogInterface, i: Int ->})
-
-
-
 
         return builder.create()
     }

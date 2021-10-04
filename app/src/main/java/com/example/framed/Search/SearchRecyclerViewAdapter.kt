@@ -27,7 +27,6 @@ class SearchRecyclerViewAdapter(val homeFeed: List<Game>): RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-//        val gameTitle = gameTitles.get(position)
         val game = homeFeed.get(position)
         holder.itemView.textView_game_name_searched.text = game.name
 
@@ -71,13 +70,10 @@ class SearchRecyclerViewAdapter(val homeFeed: List<Game>): RecyclerView.Adapter<
         println(ageRating)
 
         var releaseDate = ""
-        /*if(game.first_release_date != null){
-            game.involved_companies.forEach{developers += it.company.name + " • "}
-            game.involved_companies.forEach { println(it.company.name) }
-        }*/
+
         val sdf = java.text.SimpleDateFormat("dd' 'MMMM' 'yyyy")
         val date = java.util.Date(game.first_release_date * 1000)
-        println("looooopy" + game.first_release_date)
+
         if(sdf.format(date)== "01 January 1970"){
             println("date is null")
         }else{
@@ -107,6 +103,6 @@ class SearchRecyclerViewAdapter(val homeFeed: List<Game>): RecyclerView.Adapter<
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //val v: View = LayoutInflater.from(mContext).inflate(R.layout)
+
     }
 }

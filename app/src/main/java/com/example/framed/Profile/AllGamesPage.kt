@@ -36,7 +36,6 @@ class AllGamesPage : AppCompatActivity() {
 
         val choosePlatform = findViewById<EditText>(R.id.choose_platform)
 
-        println("filt " + filt)
         val games: MutableList<Game2> = arrayListOf()
         dbList.forEach{
             if(it.platforms.contains(filt)){
@@ -67,9 +66,6 @@ class AllGamesPage : AppCompatActivity() {
                 openFilterDialog(filt);
             }
         })
-        //val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, lang)
-        //val adapter = GridAdapter(this, dbList)
-        //grid.adapter = adapter
 
     }
 
@@ -78,6 +74,7 @@ class AllGamesPage : AppCompatActivity() {
         fD.show(supportFragmentManager, "filter dialog")
     }
 
+    //Setting what happens when back is pressed on this page
     override fun onBackPressed() {
         super.onBackPressed()
         if(filt.equals("All")){

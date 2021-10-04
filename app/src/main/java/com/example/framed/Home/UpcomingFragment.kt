@@ -24,7 +24,6 @@ class UpcomingFragment: Fragment(){
         val view: View = inflater.inflate(R.layout.fragment_upcoming, container, false)
         rec = view.findViewById(R.id.recyclerViewHome)
         rec.layoutManager = LinearLayoutManager(context)
-//        rec.adapter = UpcomingRecyclerViewAdapter()
 
         fetchReleased()
         return view
@@ -36,11 +35,13 @@ class UpcomingFragment: Fragment(){
     }
 
     private fun fetchReleased(){
+        //Getting all games in user's library
         val dbHelperClass = DBHelper(activity!!.applicationContext)
         val dbList = dbHelperClass.readGames()
 
         val games: MutableList<Game2> = arrayListOf()
 
+        //Getting all the games in users library that have not been released yet
         dbList.forEach{
             val current = System.currentTimeMillis()/1000L
             if( it.first_release_date > current || it.first_release_date == 0L){
@@ -55,12 +56,12 @@ class UpcomingFragment: Fragment(){
         }
 
         rec.adapter = UpcomingRecyclerViewAdapter(games)
-
     }
 
     override fun onResume() {
         super.onResume()
 
+        //reloading fragment on resume
         rec = view!!.findViewById(R.id.recyclerViewHome)
         rec.layoutManager = LinearLayoutManager(context)
         fetchReleased()
